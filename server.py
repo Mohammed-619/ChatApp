@@ -1,3 +1,4 @@
+import os
 import socket
 import threading
 
@@ -7,13 +8,15 @@ def handle_client(client_socket):
 
         if message == "FILE":
             file_name = client_socket.recv(1024).decode('utf-8')  # Receive file name from client
+            file_size = int(client_socket.recv(1024).decode('utf-8'))  # Receive file size
 
             with open(file_name, 'wb') as file:
-                file_data = client_socket.recv(1024)  # Receive file data from client
+                bytes_received = 0
 
-                while file_data:  # Loop until all file data is received
-                    file.write(file_data) 
+                while bytes_received < file_size:
                     file_data = client_socket.recv(1024)
+                    file.write(file_data)
+                    bytes_received += len(file_data)
 
             print(f"Received file: {file_name}") 
         else:
@@ -26,7 +29,8 @@ def handle_client(client_socket):
 
             file_name = input("Enter the filename: ") 
             client_socket.sendall(file_name.encode('utf-8'))  # Send the file name to the client
-
+            file_size = str(os.path.getsize(file_name)).encode('utf-8')  # Get file size
+            client_socket.sendall(file_size.ljust(1024))  # Send file size
             with open(file_name, 'rb') as file: 
                 file_data = file.read(1024)
 
@@ -38,7 +42,7 @@ def handle_client(client_socket):
 
 def main():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # AF_INET = IPv4 addressing, socket.SOCK_STREAM = TCP
-    server.bind(('0.0.0.0', 1000)) # '0.0.0.0' = all available network interfaces
+    server.bind(('0.0.0.0', 1005)) # '0.0.0.0' = all available network interfaces
     server.listen(5) # 5 queued connections
     print("Server listening on port 1000")
 
