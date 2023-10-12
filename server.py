@@ -48,5 +48,5 @@ def main():
         client_handler = threading.Thread(target=handle_client, args=(client_socket,)) # Handling client connections in separate threads
         client_handler.start()
 
-    if __name__ == "__main__":
-        main()
+if __name__ == "__main__":
+    main()
