@@ -3,7 +3,7 @@ import socket
 
 def main():
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect(('127.0.0.1', 1005))  # Connect to the server
+    client.connect(('127.0.0.1', 1000))  # Connect to the server
 
     while True:
         message = input("Client: ")  # Get user input
@@ -30,7 +30,7 @@ def main():
                 while bytes_received < file_size:
                     file_data = client.recv(1024)
                     file.write(file_data)
-                    bytes_eceived += len(file_data)
+                    bytes_received += len(file_data)
             print(f"Received file: {file_name}")  # Print the received file name
         else:
             print(f"Server: {reply}")  # Print the server's reply

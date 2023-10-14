@@ -42,7 +42,7 @@ def handle_client(client_socket):
 
 def main():
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # AF_INET = IPv4 addressing, socket.SOCK_STREAM = TCP
-    server.bind(('0.0.0.0', 1005)) # '0.0.0.0' = all available network interfaces
+    server.bind(('0.0.0.0', 1000)) # '0.0.0.0' = all available network interfaces
     server.listen(5) # 5 queued connections
     print("Server listening on port 1000")
 
